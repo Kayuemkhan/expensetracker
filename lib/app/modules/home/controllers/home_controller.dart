@@ -6,7 +6,7 @@ import 'package:expensetracker/app/data/model/expense.dart';
 import 'package:expensetracker/app/core/values/expense_constants.dart';
 
 class HomeController extends BaseController {
-  final ExpenseRepository _expenseRepository = Get.find<ExpenseRepository>();
+  final ExpenseRepository _expenseRepository = Get.put(ExpenseRepository());
 
   // Observables
   final RxList<Expense> _todayExpenses = RxList<Expense>();
@@ -132,10 +132,8 @@ class HomeController extends BaseController {
 
       await _expenseRepository.addExpense(expense);
 
-      // Clear form
       _clearExpenseForm();
 
-      // Reload data
       await Future.wait([
         loadBudgetData(),
         loadTodayExpenses(),

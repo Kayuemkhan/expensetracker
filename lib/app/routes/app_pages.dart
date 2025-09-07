@@ -13,6 +13,10 @@ import 'package:expensetracker/app/modules/project_details/views/project_details
 import 'package:expensetracker/app/modules/settings/bindings/settings_binding.dart';
 import 'package:expensetracker/app/modules/settings/views/settings_view.dart';
 
+import '../modules/expense_details/views/expense_details.dart';
+import '../modules/quick_expense/bindings/quick_expense_bindings.dart';
+import '../modules/quick_expense/views/quick_expense_view.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -46,9 +50,15 @@ class AppPages {
       page: () =>  OtherView(),
       binding: OtherBinding(),
     ),
+
     GetPage(
-      name: _Paths.PROJECT_DETAILS,
-      page: () =>  ProjectDetailsView(),
+      name: _Paths.QUICK_EXPENSE,
+      page: () => const QuickExpenseView(),
+      binding: QuickExpenseBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXPENSE_DETAILS,
+      page: () =>  ExpenseDetailsView(),
       binding: ProjectDetailsBinding(),
     ),
   ];

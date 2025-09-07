@@ -95,6 +95,6 @@ class ItemGithubProject extends StatelessWidget with BaseWidgetMixin {
   }
 
   void _onTap() {
-    Get.toNamed(Routes.PROJECT_DETAILS, arguments: dataModel);
+    Get.toNamed(Routes.EXPENSE_DETAILS, arguments: dataModel);
   }
 }

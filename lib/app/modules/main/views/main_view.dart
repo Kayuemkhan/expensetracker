@@ -13,11 +13,8 @@ import 'package:get/get.dart';
 
 class MainView extends BaseView<MainController> {
   @override
-  PreferredSizeWidget appBar(BuildContext context) {
-    return CustomAppBar(
-      appBarTitleText: controller.selectedMenuCode.name,
-
-    );
+  PreferredSizeWidget? appBar(BuildContext context) {
+    return null;
   }
 
 

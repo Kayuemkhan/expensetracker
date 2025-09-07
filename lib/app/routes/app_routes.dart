@@ -9,7 +9,8 @@ abstract class Routes {
   static const FAVORITE = _Paths.FAVORITE;
   static const SETTINGS = _Paths.SETTINGS;
   static const OTHER = _Paths.OTHER;
-  static const PROJECT_DETAILS = _Paths.PROJECT_DETAILS;
+  static const EXPENSE_DETAILS = _Paths.EXPENSE_DETAILS;
+  static const QUICK_EXPENSE  = _Paths.QUICK_EXPENSE ;
 }
 
 abstract class _Paths {
@@ -18,5 +19,6 @@ abstract class _Paths {
   static const FAVORITE = '/favorite';
   static const SETTINGS = '/settings';
   static const OTHER = '/other';
-  static const PROJECT_DETAILS = '/project-details';
+  static const EXPENSE_DETAILS = '/expense-details';
+  static const QUICK_EXPENSE = '/quick-expense';
 }
