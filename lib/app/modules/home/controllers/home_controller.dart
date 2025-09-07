@@ -8,7 +8,6 @@ import 'package:expensetracker/app/core/values/expense_constants.dart';
 class HomeController extends BaseController {
   final ExpenseRepository _expenseRepository = Get.put(ExpenseRepository());
 
-  // Observables
   final RxList<Expense> _todayExpenses = RxList<Expense>();
   final RxDouble _dailyBudget = 0.0.obs;
   final RxDouble _todaySpent = 0.0.obs;
@@ -19,7 +18,6 @@ class HomeController extends BaseController {
   final RxBool _isLoadingBudget = true.obs;
   final RxBool _isLoadingExpenses = true.obs;
 
-  // Getters
   List<Expense> get todayExpenses => _todayExpenses.toList();
   double get dailyBudget => _dailyBudget.value;
   double get todaySpent => _todaySpent.value;
@@ -30,7 +28,6 @@ class HomeController extends BaseController {
   bool get isLoadingBudget => _isLoadingBudget.value;
   bool get isLoadingExpenses => _isLoadingExpenses.value;
 
-  // Form controllers for adding expense
   final TextEditingController amountController = TextEditingController();
   final TextEditingController merchantController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
@@ -70,9 +67,8 @@ class HomeController extends BaseController {
         _todaySpent.value = todaySpent;
         _remainingBudget.value = budget.dailyAmount - todaySpent;
       } else {
-        // Set default budget if none exists
-        await _expenseRepository.setBudget(18000); // Default 600 * 30 days
-        await loadBudgetData(); // Reload after setting default
+        await _expenseRepository.setBudget(18000);
+        await loadBudgetData();
       }
     } catch (e) {
       logger.e('Error loading budget data: $e');
@@ -98,11 +94,9 @@ class HomeController extends BaseController {
       final trendData = await _expenseRepository.getSpendingTrend();
       _spendingTrend.assignAll(trendData);
 
-      // Calculate total and percentage change
       double total = trendData.values.fold(0.0, (sum, amount) => sum + amount);
       _threeMonthTotal.value = total;
 
-      // Calculate percentage change (simplified - comparing first and last month)
       if (trendData.length >= 2) {
         final values = trendData.values.toList();
         final firstMonth = values.first;
@@ -139,7 +133,7 @@ class HomeController extends BaseController {
         loadTodayExpenses(),
       ]);
 
-      Get.back(); // Close bottom sheet
+      Get.back();
       Get.snackbar('Success', 'Expense added successfully!');
 
     } catch (e) {
@@ -152,7 +146,6 @@ class HomeController extends BaseController {
     try {
       await _expenseRepository.deleteExpense(expenseId);
 
-      // Reload data
       await Future.wait([
         loadBudgetData(),
         loadTodayExpenses(),
@@ -212,120 +205,472 @@ class HomeController extends BaseController {
   }
 
   Widget _buildAddExpenseBottomSheet() {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 20,
-        bottom: MediaQuery.of(Get.context!).viewInsets.bottom + 20,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Handle bar
-          Center(
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Title
-          const Text(
-            'Add Expense',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Amount field
-          TextField(
-            controller: amountController,
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(
-              labelText: 'Amount',
-              prefixText: '৳ ',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 16),
-
-          // Category dropdown
-          Obx(() => DropdownButtonFormField<String>(
-            value: selectedCategory.value,
-            decoration: const InputDecoration(
-              labelText: 'Category',
-              border: OutlineInputBorder(),
-            ),
-            items: ExpenseConstants.categories.map((category) {
-              return DropdownMenuItem(
-                value: category,
-                child: Row(
-                  children: [
-                    Text(
-                      ExpenseConstants.categoryIcons[category] ?? '📦',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(category),
-                  ],
-                ),
-              );
-            }).toList(),
-            onChanged: (value) {
-              if (value != null) selectedCategory.value = value;
-            },
-          )),
-          const SizedBox(height: 16),
-
-          // Merchant field
-          TextField(
-            controller: merchantController,
-            decoration: const InputDecoration(
-              labelText: 'Merchant',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 16),
-
-          // Note field
-          TextField(
-            controller: noteController,
-            decoration: const InputDecoration(
-              labelText: 'Note (Optional)',
-              border: OutlineInputBorder(),
-            ),
-            maxLines: 2,
-          ),
-          const SizedBox(height: 24),
-
-          // Buttons
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () => Get.back(),
-                  child: const Text('Cancel'),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: addExpense,
-                  child: const Text('Save'),
-                ),
-              ),
-            ],
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 20,
+            offset: Offset(0, -5),
           ),
         ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 20,
+          bottom: MediaQuery.of(Get.context!).viewInsets.bottom + 24,
+        ),
+        child: ListView(
+          physics: ScrollPhysics(),
+          children: [
+            // Enhanced Handle Bar
+            Center(
+              child: Container(
+                width: 50,
+                height: 5,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.grey.shade300, Colors.grey.shade400],
+                  ),
+                  borderRadius: BorderRadius.circular(3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 28),
+
+            // Enhanced Title with Icon
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.blue.shade400, Colors.blue.shade600],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.add_card_rounded,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const Text(
+                  'Add Expense',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+
+            // Enhanced Amount Field
+            _buildStyledTextField(
+              controller: amountController,
+              label: 'Amount',
+              prefixText: '৳ ',
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              icon: Icons.attach_money_rounded,
+              iconColor: Colors.green.shade600,
+            ),
+            const SizedBox(height: 20),
+
+            // Enhanced Category Dropdown
+            Obx(() => _buildStyledDropdown(
+              value: selectedCategory.value,
+              label: 'Category',
+              icon: Icons.category_rounded,
+              iconColor: Colors.purple.shade600,
+              items: ExpenseConstants.categories.map((category) {
+                return DropdownMenuItem(
+                  value: category,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Color(ExpenseConstants.categoryColors[category] ?? 0xFF607D8B)
+                                .withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            ExpenseConstants.categoryIcons[category] ?? '📦',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          category,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) {
+                if (value != null) selectedCategory.value = value;
+              },
+            )),
+            const SizedBox(height: 20),
+
+            // Enhanced Merchant Field
+            _buildStyledTextField(
+              controller: merchantController,
+              label: 'Merchant',
+              icon: Icons.store_rounded,
+              iconColor: Colors.orange.shade600,
+            ),
+            const SizedBox(height: 20),
+
+            // Enhanced Note Field
+            _buildStyledTextField(
+              controller: noteController,
+              label: 'Note (Optional)',
+              icon: Icons.note_rounded,
+              iconColor: Colors.blue.shade600,
+              maxLines: 3,
+            ),
+            const SizedBox(height: 32),
+
+            // Enhanced Action Buttons
+            Row(
+              children: [
+                Expanded(
+                  child: _buildCancelButton(),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 2,
+                  child: _buildSaveButton(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStyledTextField({
+    required TextEditingController controller,
+    required String label,
+    String? prefixText,
+    TextInputType? keyboardType,
+    required IconData icon,
+    required Color iconColor,
+    int maxLines = 1,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.black87,
+        ),
+        decoration: InputDecoration(
+          labelText: label,
+          prefixText: prefixText,
+          prefixStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: iconColor,
+          ),
+          labelStyle: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          prefixIcon: Container(
+            margin: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: iconColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              icon,
+              color: iconColor,
+              size: 20,
+            ),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: iconColor, width: 2),
+          ),
+          filled: true,
+          fillColor: Colors.grey.shade50,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStyledDropdown({
+    required String value,
+    required String label,
+    required IconData icon,
+    required Color iconColor,
+    required List<DropdownMenuItem<String>> items,
+    required Function(String?) onChanged,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: DropdownButtonFormField<String>(
+        value: value,
+        items: items,
+        onChanged: onChanged,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.black87,
+        ),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          prefixIcon: Container(
+            margin: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: iconColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              icon,
+              color: iconColor,
+              size: 20,
+            ),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: iconColor, width: 2),
+          ),
+          filled: true,
+          fillColor: Colors.grey.shade50,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
+        ),
+        dropdownColor: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        elevation: 8,
+        icon: Container(
+          margin: const EdgeInsets.only(right: 12),
+          child: Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: iconColor,
+            size: 24,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCancelButton() {
+    return Container(
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.grey.shade300,
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => Get.back(),
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white,
+                  Colors.grey.shade50,
+                ],
+              ),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.close_rounded,
+                    color: Colors.grey.shade600,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return Container(
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.blue.shade400,
+            Colors.blue.shade600,
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.4),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.2),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: addExpense,
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white.withOpacity(0.2),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            child: const Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.save_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'Save Expense',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

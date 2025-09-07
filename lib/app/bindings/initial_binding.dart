@@ -10,5 +10,6 @@ class InitialBinding implements Bindings {
     RepositoryBindings().dependencies();
     RemoteSourceBindings().dependencies();
     LocalSourceBindings().dependencies();
+
   }
 }

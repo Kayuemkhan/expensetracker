@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:expensetracker/app/modules/favorite/bindings/favorite_binding.dart';
+import 'package:expensetracker/app/modules/favorite/bindings/journal_binding.dart';
 import 'package:expensetracker/app/modules/favorite/views/favorite_view.dart';
 import 'package:expensetracker/app/modules/home/bindings/home_binding.dart';
 import 'package:expensetracker/app/modules/home/views/home_view.dart';
@@ -13,6 +13,7 @@ import 'package:expensetracker/app/modules/project_details/views/project_details
 import 'package:expensetracker/app/modules/settings/bindings/settings_binding.dart';
 import 'package:expensetracker/app/modules/settings/views/settings_view.dart';
 
+import '../modules/expense_details/bindings/explore_binding.dart';
 import '../modules/expense_details/views/expense_details.dart';
 import '../modules/quick_expense/bindings/quick_expense_bindings.dart';
 import '../modules/quick_expense/views/quick_expense_view.dart';
@@ -37,8 +38,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FAVORITE,
-      page: () =>  FavoriteView(),
-      binding: FavoriteBinding(),
+      page: () =>  JournalView(),
+      binding: JournalBinding(),
     ),
     GetPage(
       name: _Paths.SETTINGS,
@@ -59,7 +60,7 @@ class AppPages {
     GetPage(
       name: _Paths.EXPENSE_DETAILS,
       page: () =>  ExpenseDetailsView(),
-      binding: ProjectDetailsBinding(),
+      binding: ExpenseBinding(),
     ),
   ];
 }

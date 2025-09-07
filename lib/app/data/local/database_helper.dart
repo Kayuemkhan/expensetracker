@@ -1,8 +1,9 @@
-// app/data/local/database_helper.dart
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:expensetracker/app/data/model/expense.dart';
 import 'package:expensetracker/app/data/model/budget.dart';
+
+import '../model/impulse_item.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -46,9 +47,44 @@ class DatabaseHelper {
         month INTEGER NOT NULL
       )
     ''');
+
+    await db.execute('''
+    CREATE TABLE expenses(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      amount REAL NOT NULL,
+      category TEXT NOT NULL,
+      note TEXT,
+      date INTEGER NOT NULL,
+      merchant TEXT NOT NULL
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE budgets(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      monthlyAmount REAL NOT NULL,
+      dailyAmount REAL NOT NULL,
+      month INTEGER NOT NULL
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE impulse_items(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      price REAL NOT NULL,
+      category TEXT NOT NULL,
+      desireLevel INTEGER NOT NULL,
+      createdDate INTEGER NOT NULL,
+      cooldownPeriodHours INTEGER NOT NULL,
+      cooldownEndDate INTEGER NOT NULL,
+      status INTEGER NOT NULL DEFAULT 0,
+      decisionDate INTEGER,
+      notes TEXT
+    )
+  ''');
   }
 
-  // Expense CRUD operations
   Future<int> insertExpense(Expense expense) async {
     final db = await database;
     return await db.insert('expenses', expense.toJson());
@@ -136,7 +172,6 @@ class DatabaseHelper {
     );
   }
 
-  // Budget CRUD operations
   Future<int> insertBudget(Budget budget) async {
     final db = await database;
     return await db.insert('budgets', budget.toJson());
@@ -167,5 +202,105 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [budget.id],
     );
+  }
+  Future<int> insertImpulseItem(ImpulseItem item) async {
+    final db = await database;
+    return await db.insert('impulse_items', item.toJson());
+  }
+
+  Future<List<ImpulseItem>> getAllImpulseItems() async {
+    final db = await database;
+    final result = await db.query(
+      'impulse_items',
+      orderBy: 'createdDate DESC',
+    );
+    return result.map((map) => ImpulseItem.fromJson(map)).toList();
+  }
+
+  Future<List<ImpulseItem>> getImpulseItemsByStatus(ImpulseStatus status) async {
+    final db = await database;
+    final result = await db.query(
+      'impulse_items',
+      where: 'status = ?',
+      whereArgs: [status.index],
+      orderBy: 'createdDate DESC',
+    );
+    return result.map((map) => ImpulseItem.fromJson(map)).toList();
+  }
+
+  Future<List<ImpulseItem>> getWaitingImpulseItems() async {
+    final db = await database;
+    final result = await db.query(
+      'impulse_items',
+      where: 'status = ?',
+      whereArgs: [ImpulseStatus.waiting.index],
+      orderBy: 'cooldownEndDate ASC',
+    );
+    return result.map((map) => ImpulseItem.fromJson(map)).toList();
+  }
+
+  Future<List<ImpulseItem>> getCompletedImpulseItems() async {
+    final db = await database;
+    final result = await db.query(
+      'impulse_items',
+      where: 'status != ?',
+      whereArgs: [ImpulseStatus.waiting.index],
+      orderBy: 'decisionDate DESC',
+    );
+    return result.map((map) => ImpulseItem.fromJson(map)).toList();
+  }
+
+  Future<int> updateImpulseItem(ImpulseItem item) async {
+    final db = await database;
+    return await db.update(
+      'impulse_items',
+      item.toJson(),
+      where: 'id = ?',
+      whereArgs: [item.id],
+    );
+  }
+
+  Future<int> deleteImpulseItem(int id) async {
+    final db = await database;
+    return await db.delete(
+      'impulse_items',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<double> getTotalSavedFromSkippedItems() async {
+    final db = await database;
+    final result = await db.rawQuery('''
+    SELECT SUM(price) as total FROM impulse_items 
+    WHERE status = ?
+  ''', [ImpulseStatus.skipped.index]);
+
+    return result.first['total'] as double? ?? 0.0;
+  }
+
+  Future<Map<String, int>> getImpulseItemStats() async {
+    final db = await database;
+
+    final totalResult = await db.rawQuery('SELECT COUNT(*) as count FROM impulse_items');
+    final waitingResult = await db.rawQuery(
+        'SELECT COUNT(*) as count FROM impulse_items WHERE status = ?',
+        [ImpulseStatus.waiting.index]
+    );
+    final boughtResult = await db.rawQuery(
+        'SELECT COUNT(*) as count FROM impulse_items WHERE status = ?',
+        [ImpulseStatus.bought.index]
+    );
+    final skippedResult = await db.rawQuery(
+        'SELECT COUNT(*) as count FROM impulse_items WHERE status = ?',
+        [ImpulseStatus.skipped.index]
+    );
+
+    return {
+      'total': totalResult.first['count'] as int,
+      'waiting': waitingResult.first['count'] as int,
+      'bought': boughtResult.first['count'] as int,
+      'skipped': skippedResult.first['count'] as int,
+    };
   }
 }

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/expense_controller.dart';
 
 
-class ExploreBinding extends Bindings {
+class ExpenseBinding extends Bindings {
   @override
   void dependencies() {
 

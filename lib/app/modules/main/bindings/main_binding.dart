@@ -1,4 +1,4 @@
-import 'package:expensetracker/app/modules/favorite/controllers/favorite_controller.dart';
+import 'package:expensetracker/app/modules/favorite/controllers/journal_controller.dart';
 import 'package:expensetracker/app/modules/home/controllers/home_controller.dart';
 import 'package:expensetracker/app/modules/main/controllers/main_controller.dart';
 import 'package:expensetracker/app/modules/other/controllers/other_controller.dart';
@@ -22,8 +22,8 @@ class MainBinding extends Bindings {
       () => HomeController(),
       fenix: true,
     );
-    Get.lazyPut<FavoriteController>(
-      () => FavoriteController(),
+    Get.lazyPut<JournalController>(
+      () => JournalController(),
     );
     Get.lazyPut<SettingsController>(
       () => SettingsController(),

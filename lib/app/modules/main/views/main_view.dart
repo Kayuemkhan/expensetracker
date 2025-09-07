@@ -38,7 +38,7 @@ class MainView extends BaseView<MainController> {
   }
 
   final HomeView homeView = HomeView();
-  FavoriteView? favoriteView;
+  JournalView? favoriteView;
   SettingsView? exploreView;
   SettingsView? interestView;
 
@@ -47,7 +47,7 @@ class MainView extends BaseView<MainController> {
       case MenuCode.HOME:
         return homeView;
       case MenuCode.JOURNAL:
-        favoriteView ??= FavoriteView();
+        favoriteView ??= JournalView();
         return favoriteView!;
       case MenuCode.INSIGHTS:
         exploreView ??= SettingsView();

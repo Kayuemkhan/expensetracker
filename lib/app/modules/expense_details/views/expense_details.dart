@@ -1,4 +1,5 @@
 import 'package:expensetracker/app/core/base/base_view.dart';
+import 'package:expensetracker/app/core/values/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -100,7 +101,7 @@ class ExpenseDetailsView extends BaseView<ExpenseController> {
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
         title: const Text(
-          'Expense Details',
+          'Transaction Details',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -123,15 +124,6 @@ class ExpenseDetailsView extends BaseView<ExpenseController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Transaction Details Section
-          const Text(
-            'Transaction Details',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 24),
 
           // Merchant
           _buildDetailItem(
@@ -194,11 +186,10 @@ class ExpenseDetailsView extends BaseView<ExpenseController> {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    // TODO: Implement edit functionality
                     Get.snackbar('Info', 'Edit functionality coming soon!');
                   },
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -211,8 +202,8 @@ class ExpenseDetailsView extends BaseView<ExpenseController> {
                 child: ElevatedButton(
                   onPressed: () => _confirmDeleteExpense(expense),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: AppColors.colorPrimary,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

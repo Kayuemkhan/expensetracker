@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class HomeView extends BaseView<HomeController> {
+   HomeView({super.key});
+
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
@@ -25,7 +27,7 @@ class HomeView extends BaseView<HomeController> {
         Container(
           margin: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: AppColors.colorPrimary,
             borderRadius: BorderRadius.circular(12),
           ),
           child: IconButton(
@@ -247,8 +249,8 @@ class HomeView extends BaseView<HomeController> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Colors.blue.shade50,
                 Colors.white,
+                Colors.blue.shade50.withOpacity(0.3),
               ],
             ),
           ),
@@ -420,122 +422,220 @@ class HomeView extends BaseView<HomeController> {
       ),
     );
   }
-
   Widget _buildSpendingTrendCard() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Card(
-        elevation: 4,
-        shadowColor: Colors.grey.withOpacity(0.2),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Spending Trend',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              Obx(() => Row(
-                children: [
-                  Text(
-                    NumberFormat.currency(symbol: '৳', decimalDigits: 0)
-                        .format(controller.threeMonthTotal),
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: controller.percentageChange.startsWith('-')
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          controller.percentageChange.startsWith('-')
-                              ? Icons.trending_down
-                              : Icons.trending_up,
-                          size: 14,
-                          color: controller.percentageChange.startsWith('-')
-                              ? Colors.green
-                              : Colors.red,
+        elevation: 8,
+        shadowColor: Colors.blue.withOpacity(0.15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white,
+                Colors.blue.shade50.withOpacity(0.3),
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.blue.shade400, Colors.blue.shade600],
                         ),
-                        const SizedBox(width: 4),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.trending_up_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    const Expanded(
+                      child: Text(
+                        'Spending Trend',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                Obx(() => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
                         Text(
-                          controller.percentageChange,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: controller.percentageChange.startsWith('-')
-                                ? Colors.green
-                                : Colors.red,
+                          NumberFormat.currency(symbol: '৳', decimalDigits: 0)
+                              .format(controller.threeMonthTotal),
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black87,
+                            letterSpacing: -1,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: controller.percentageChange.startsWith('-')
+                                    ? [Colors.green.shade300, Colors.green.shade500]
+                                    : [Colors.red.shade300, Colors.red.shade500],
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (controller.percentageChange.startsWith('-')
+                                      ? Colors.green
+                                      : Colors.red).withOpacity(0.3),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  controller.percentageChange.startsWith('-')
+                                      ? Icons.south_west_rounded
+                                      : Icons.north_east_rounded,
+                                  size: 16,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  controller.percentageChange.replaceAll('-', ''),
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              )),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        'Last 3 Months',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
 
-              const SizedBox(height: 8),
+                const SizedBox(height: 32),
 
-              Text(
-                'Last 3 Months',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Line Chart
-              Obx(() => _buildLineChart()),
-            ],
+                // Enhanced Line Chart
+                Obx(() => _buildEnhancedLineChart()),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildLineChart() {
+  Widget _buildEnhancedLineChart() {
     if (controller.spendingTrend.isEmpty) {
       return Container(
-        height: 150,
+        height: 180,
         decoration: BoxDecoration(
-          color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.grey.shade50,
+              Colors.grey.shade100.withOpacity(0.5),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Colors.grey.shade200,
+            width: 1,
+          ),
         ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.trending_up,
-                size: 48,
-                color: Colors.grey.shade400,
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.show_chart_rounded,
+                  size: 40,
+                  color: Colors.grey.shade400,
+                ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Text(
                 'No data available',
                 style: TextStyle(
                   color: Colors.grey.shade600,
-                  fontSize: 14,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Start adding expenses to see trends',
+                style: TextStyle(
+                  color: Colors.grey.shade500,
+                  fontSize: 12,
                 ),
               ),
             ],
@@ -546,22 +646,41 @@ class HomeView extends BaseView<HomeController> {
 
     final spots = controller.spendingTrend.entries.map((entry) {
       final index = controller.spendingTrend.keys.toList().indexOf(entry.key);
-      return FlSpot(index.toDouble(), entry.value / 1000); // Convert to thousands
+      return FlSpot(index.toDouble(), entry.value / 1000);
     }).toList();
 
     return Container(
-      height: 150,
+      height: 180,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.white,
+            Colors.blue.shade50.withOpacity(0.2),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.blue.shade100.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      padding: const EdgeInsets.all(16),
       child: LineChart(
         LineChartData(
           gridData: FlGridData(
             show: true,
             drawHorizontalLine: true,
             drawVerticalLine: false,
-            horizontalInterval: 5,
+            horizontalInterval: spots.isNotEmpty
+                ? (spots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b) / 4)
+                : 5,
             getDrawingHorizontalLine: (value) {
               return FlLine(
-                color: Colors.grey.shade200,
+                color: Colors.blue.shade100.withOpacity(0.6),
                 strokeWidth: 1,
+                dashArray: [5, 5],
               );
             },
           ),
@@ -570,19 +689,29 @@ class HomeView extends BaseView<HomeController> {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 30,
+                reservedSize: 35,
                 interval: 1,
                 getTitlesWidget: (double value, TitleMeta meta) {
                   final months = controller.spendingTrend.keys.toList();
                   if (value.toInt() < months.length) {
                     final month = months[value.toInt()];
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                    final monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    final monthIndex = int.parse(month.split('-')[1]) - 1;
+
+                    return Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Text(
-                        month.split('-')[1], // Show only month
+                        monthNames[monthIndex],
                         style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 12,
+                          color: Colors.blue.shade700,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     );
@@ -594,14 +723,24 @@ class HomeView extends BaseView<HomeController> {
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 40,
-                interval: 5,
+                reservedSize: 45,
+                interval: spots.isNotEmpty
+                    ? (spots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b) / 3)
+                    : 5,
                 getTitlesWidget: (double value, TitleMeta meta) {
-                  return Text(
-                    '${value.toInt()}k',
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 12,
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '${value.toInt()}k',
+                      style: TextStyle(
+                        color: Colors.grey.shade700,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   );
                 },
@@ -615,28 +754,32 @@ class HomeView extends BaseView<HomeController> {
           maxX: (spots.length - 1).toDouble(),
           minY: 0,
           maxY: spots.isNotEmpty
-              ? spots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b) * 1.2
+              ? spots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b) * 1.3
               : 10,
           lineBarsData: [
             LineChartBarData(
               spots: spots,
               isCurved: true,
+              curveSmoothness: 0.4,
               gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
                 colors: [
-                  Colors.blue.shade400,
-                  Colors.blue.shade600,
+                  Colors.blue.shade300,
+                  Colors.blue.shade500,
+                  Colors.blue.shade700,
                 ],
               ),
-              barWidth: 3,
+              barWidth: 4,
               isStrokeCapRound: true,
               dotData: FlDotData(
                 show: true,
                 getDotPainter: (spot, percent, barData, index) {
                   return FlDotCirclePainter(
-                    radius: 4,
-                    color: Colors.blue.shade600,
-                    strokeWidth: 2,
-                    strokeColor: Colors.white,
+                    radius: 6,
+                    color: Colors.white,
+                    strokeWidth: 3,
+                    strokeColor: Colors.blue.shade600,
                   );
                 },
               ),
@@ -646,13 +789,61 @@ class HomeView extends BaseView<HomeController> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.blue.shade100.withOpacity(0.3),
-                    Colors.blue.shade50.withOpacity(0.1),
+                    Colors.blue.shade200.withOpacity(0.4),
+                    Colors.blue.shade100.withOpacity(0.2),
+                    Colors.blue.shade50.withOpacity(0.05),
                   ],
                 ),
               ),
+              shadow: Shadow(
+                color: Colors.blue.withOpacity(0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
             ),
           ],
+          lineTouchData: LineTouchData(
+            enabled: true,
+            touchTooltipData: LineTouchTooltipData(
+
+              tooltipPadding: const EdgeInsets.all(12),
+              tooltipMargin: 8,
+              getTooltipItems: (touchedSpots) {
+                return touchedSpots.map((spot) {
+                  final months = controller.spendingTrend.keys.toList();
+                  final monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                  final monthIndex = int.parse(months[spot.spotIndex].split('-')[1]) - 1;
+
+                  return LineTooltipItem(
+                    '${monthNames[monthIndex]}\n',
+                    TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '৳${NumberFormat('#,##0').format(spot.y * 1000)}',
+                        style: TextStyle(
+                          color: Colors.blue.shade700,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList();
+              },
+            ),
+            touchCallback: (FlTouchEvent event, LineTouchResponse? touchResponse) {
+              // Add haptic feedback on touch
+              if (event is FlTapUpEvent && touchResponse?.lineBarSpots?.isNotEmpty == true) {
+                // HapticFeedback.lightImpact(); // Uncomment if you want haptic feedback
+              }
+            },
+            handleBuiltInTouches: true,
+          ),
         ),
       ),
     );
