@@ -1,0 +1,56 @@
+name: expensetracker
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.8
+
+  get: ^4.7.2
+  get_storage: ^2.1.1
+  http: ^1.5.0
+  flutter_screenutil: ^5.4.0+1
+  google_fonts: ^6.3.0
+  animations: 2.0.11
+  cached_network_image: 3.3.1
+  dio: 5.9.0
+  font_awesome_flutter: 10.9.1
+  flutter_localizations:
+    sdk: flutter
+  fluttertoast: ^8.2.12
+  flutter_svg: 2.2.0
+  intl: 0.20.2
+  logger: 2.6.1
+  pretty_dio_logger: 1.4.0
+  shared_preferences: 2.5.3
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 2.0.2
+  analyzer: 4.7.0
+  dart_code_metrics: any
+#  change_app_package_name: 1.1.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - images/
+  fonts:
+    - family: Palatino Linotype
+      fonts:
+        - asset: fonts/Palatino Linotype.ttf
+          weight: 300
