@@ -3,6 +3,7 @@ import 'package:expensetracker/app/data/repository/github_repository_impl.dart';
 import 'package:get/get.dart';
 
 import '../data/repository/impulse_repository.dart';
+import '../data/repository/insights_repository.dart';
 
 
 
@@ -15,7 +16,7 @@ class RepositoryBindings implements Bindings {
     );
 
     Get.lazyPut<ImpulseRepository>(() => ImpulseRepository());
-
+    Get.lazyPut<InsightsRepository>(() => InsightsRepository());
 
   }
 }
