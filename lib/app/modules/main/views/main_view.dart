@@ -3,7 +3,7 @@ import 'package:expensetracker/app/modules/home/views/home_view.dart';
 import 'package:expensetracker/app/modules/main/controllers/main_controller.dart';
 import 'package:expensetracker/app/modules/main/model/menu_code.dart';
 import 'package:expensetracker/app/modules/main/views/bottom_nav_bar.dart';
-import 'package:expensetracker/app/modules/other/views/insights_view.dart';
+import 'package:expensetracker/app/modules/insights/views/insights_view.dart';
 import 'package:expensetracker/app/modules/settings/views/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

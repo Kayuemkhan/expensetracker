@@ -1,6 +1,6 @@
 import 'package:expensetracker/app/modules/home/controllers/home_controller.dart';
 import 'package:expensetracker/app/modules/main/controllers/main_controller.dart';
-import 'package:expensetracker/app/modules/other/controllers/insight_controller.dart';
+import 'package:expensetracker/app/modules/insights/controllers/insight_controller.dart';
 import 'package:expensetracker/app/modules/settings/controllers/settings_controller.dart';
 import 'package:get/get.dart';
 

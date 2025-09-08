@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '/app/modules/other/controllers/insight_controller.dart';
+import '../controllers/insight_controller.dart';
 
 class InsightsBinding extends Bindings {
   @override

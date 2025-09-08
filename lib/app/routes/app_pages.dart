@@ -4,8 +4,8 @@ import 'package:expensetracker/app/modules/home/bindings/home_binding.dart';
 import 'package:expensetracker/app/modules/home/views/home_view.dart';
 import 'package:expensetracker/app/modules/main/bindings/main_binding.dart';
 import 'package:expensetracker/app/modules/main/views/main_view.dart';
-import 'package:expensetracker/app/modules/other/bindings/insight_binding.dart';
-import 'package:expensetracker/app/modules/other/views/insights_view.dart';
+import 'package:expensetracker/app/modules/insights/bindings/insight_binding.dart';
+import 'package:expensetracker/app/modules/insights/views/insights_view.dart';
 import 'package:expensetracker/app/modules/settings/bindings/settings_binding.dart';
 import 'package:expensetracker/app/modules/settings/views/settings_view.dart';
 
