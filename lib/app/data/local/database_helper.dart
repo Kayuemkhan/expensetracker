@@ -48,25 +48,6 @@ class DatabaseHelper {
       )
     ''');
 
-    await db.execute('''
-    CREATE TABLE expenses(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      amount REAL NOT NULL,
-      category TEXT NOT NULL,
-      note TEXT,
-      date INTEGER NOT NULL,
-      merchant TEXT NOT NULL
-    )
-  ''');
-
-    await db.execute('''
-    CREATE TABLE budgets(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      monthlyAmount REAL NOT NULL,
-      dailyAmount REAL NOT NULL,
-      month INTEGER NOT NULL
-    )
-  ''');
 
     await db.execute('''
     CREATE TABLE impulse_items(
