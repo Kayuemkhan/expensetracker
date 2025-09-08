@@ -10,6 +10,7 @@ abstract class AppValues {
   static const double padding_2 = 2;
   static const double padding_3 = 3;
   static const double buttonVerticalPadding = 12;
+  static const String appName = "ExpenseTracker";
 
   static const double margin = 16;
   static const double margin_zero = 0;
