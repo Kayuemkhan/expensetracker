@@ -3,13 +3,12 @@ import 'package:expensetracker/app/modules/home/views/home_view.dart';
 import 'package:expensetracker/app/modules/main/controllers/main_controller.dart';
 import 'package:expensetracker/app/modules/main/model/menu_code.dart';
 import 'package:expensetracker/app/modules/main/views/bottom_nav_bar.dart';
-import 'package:expensetracker/app/modules/other/views/other_view.dart';
+import 'package:expensetracker/app/modules/other/views/insights_view.dart';
 import 'package:expensetracker/app/modules/settings/views/settings_view.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../favorite/views/journal_view.dart';
+import '../../journal/views/journal_view.dart';
 
 class MainView extends BaseView<MainController> {
   @override
@@ -39,7 +38,7 @@ class MainView extends BaseView<MainController> {
 
   final HomeView homeView = HomeView();
   JournalView? favoriteView;
-  SettingsView? exploreView;
+  InsightsView? exploreView;
   SettingsView? interestView;
 
   MainView({super.key});
@@ -52,7 +51,7 @@ class MainView extends BaseView<MainController> {
         favoriteView ??= JournalView();
         return favoriteView!;
       case MenuCode.INSIGHTS:
-        exploreView ??= SettingsView();
+        exploreView ??= InsightsView();
         return exploreView!;
       case MenuCode.SETTINGS:
         interestView ??= SettingsView();

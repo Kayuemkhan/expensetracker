@@ -16,7 +16,7 @@ abstract class Routes {
 abstract class _Paths {
   static const MAIN = '/main';
   static const HOME = '/home';
-  static const FAVORITE = '/favorite';
+  static const FAVORITE = '/journal';
   static const SETTINGS = '/settings';
   static const OTHER = '/other';
   static const EXPENSE_DETAILS = '/expense-details';

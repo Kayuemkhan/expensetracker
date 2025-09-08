@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../data/repository/impulse_repository.dart';
-import '/app/modules/favorite/controllers/journal_controller.dart';
+import '../controllers/journal_controller.dart';
 
 class JournalBinding extends Bindings {
   @override

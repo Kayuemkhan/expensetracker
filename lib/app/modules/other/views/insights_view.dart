@@ -2,12 +2,12 @@ import 'package:expensetracker/app/core/base/base_view.dart';
 import 'package:expensetracker/app/core/widget/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../controllers/other_controller.dart';
+import '../controllers/insight_controller.dart';
 
-class OtherView extends BaseView<OtherController> {
+class InsightsView extends BaseView<InsightController> {
   final String viewParam;
 
-  OtherView({this.viewParam = ""});
+  InsightsView({super.key, this.viewParam = ""});
 
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
