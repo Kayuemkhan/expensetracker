@@ -1,20 +1,18 @@
 import 'package:get/get.dart';
 
 import 'package:expensetracker/app/modules/favorite/bindings/journal_binding.dart';
-import 'package:expensetracker/app/modules/favorite/views/favorite_view.dart';
 import 'package:expensetracker/app/modules/home/bindings/home_binding.dart';
 import 'package:expensetracker/app/modules/home/views/home_view.dart';
 import 'package:expensetracker/app/modules/main/bindings/main_binding.dart';
 import 'package:expensetracker/app/modules/main/views/main_view.dart';
 import 'package:expensetracker/app/modules/other/bindings/other_binding.dart';
 import 'package:expensetracker/app/modules/other/views/other_view.dart';
-import 'package:expensetracker/app/modules/project_details/bindings/project_details_binding.dart';
-import 'package:expensetracker/app/modules/project_details/views/project_details_view.dart';
 import 'package:expensetracker/app/modules/settings/bindings/settings_binding.dart';
 import 'package:expensetracker/app/modules/settings/views/settings_view.dart';
 
 import '../modules/expense_details/bindings/explore_binding.dart';
 import '../modules/expense_details/views/expense_details.dart';
+import '../modules/favorite/views/journal_view.dart';
 import '../modules/quick_expense/bindings/quick_expense_bindings.dart';
 import '../modules/quick_expense/views/quick_expense_view.dart';
 

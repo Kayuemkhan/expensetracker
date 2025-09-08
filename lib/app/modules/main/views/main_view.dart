@@ -1,6 +1,4 @@
 import 'package:expensetracker/app/core/base/base_view.dart';
-import 'package:expensetracker/app/core/widget/custom_app_bar.dart';
-import 'package:expensetracker/app/modules/favorite/views/favorite_view.dart';
 import 'package:expensetracker/app/modules/home/views/home_view.dart';
 import 'package:expensetracker/app/modules/main/controllers/main_controller.dart';
 import 'package:expensetracker/app/modules/main/model/menu_code.dart';
@@ -10,6 +8,8 @@ import 'package:expensetracker/app/modules/settings/views/settings_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../favorite/views/journal_view.dart';
 
 class MainView extends BaseView<MainController> {
   @override
@@ -42,6 +42,8 @@ class MainView extends BaseView<MainController> {
   SettingsView? exploreView;
   SettingsView? interestView;
 
+  MainView({super.key});
+
   Widget getPageOnSelectedMenu(MenuCode menuCode) {
     switch (menuCode) {
       case MenuCode.HOME:
@@ -55,11 +57,7 @@ class MainView extends BaseView<MainController> {
       case MenuCode.SETTINGS:
         interestView ??= SettingsView();
         return interestView!;
-      default:
-        return OtherView(
-          viewParam: describeEnum(menuCode),
-        );
-    }
+      }
   }
 }
 

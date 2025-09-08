@@ -1,4 +1,3 @@
-// app/modules/journal/views/journal_view.dart
 import 'package:expensetracker/app/core/base/base_view.dart';
 import 'package:expensetracker/app/core/values/app_colors.dart';
 import 'package:expensetracker/app/core/values/impulse_constants.dart';
@@ -62,142 +61,291 @@ class JournalView extends BaseView<JournalController> {
     );
   }
 
-  Widget _buildSavingsCard() {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      child: Card(
-        elevation: 8,
-        shadowColor: Colors.purple.withOpacity(0.2),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.purple.shade400,
-                Colors.purple.shade600,
-              ],
-            ),
-          ),
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(
-                      Icons.savings_rounded,
-                      color: AppColors.colorPrimary,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Text(
-                      'Money Saved',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+   Widget _buildSavingsCard() {
+     return Container(
+       margin: const EdgeInsets.all(20),
+       child: Card(
+         elevation: 8,
+         shadowColor: Colors.purple.withOpacity(0.15),
+         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+         child: Container(
+           decoration: BoxDecoration(
+             borderRadius: BorderRadius.circular(24),
+             gradient: LinearGradient(
+               begin: Alignment.topLeft,
+               end: Alignment.bottomRight,
+               colors: [
+                 Colors.white,
+                 Colors.purple.shade50.withOpacity(0.3),
+               ],
+             ),
+           ),
+           child: Padding(
+             padding: const EdgeInsets.all(24.0),
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 Row(
+                   children: [
+                     Container(
+                       padding: const EdgeInsets.all(12),
+                       decoration: BoxDecoration(
+                         gradient: LinearGradient(
+                           colors: [Colors.purple.shade400, Colors.purple.shade600],
+                         ),
+                         borderRadius: BorderRadius.circular(16),
+                         boxShadow: [
+                           BoxShadow(
+                             color: Colors.purple.withOpacity(0.3),
+                             blurRadius: 8,
+                             offset: const Offset(0, 4),
+                           ),
+                         ],
+                       ),
+                       child: const Icon(
+                         Icons.savings_rounded,
+                         color: Colors.white,
+                         size: 24,
+                       ),
+                     ),
+                     const SizedBox(width: 16),
+                     const Expanded(
+                       child: Text(
+                         'Money Saved',
+                         style: TextStyle(
+                           fontSize: 22,
+                           fontWeight: FontWeight.bold,
+                           color: Colors.black87,
+                           letterSpacing: -0.5,
+                         ),
+                       ),
+                     ),
+                   ],
+                 ),
+                 const SizedBox(height: 24),
 
-              Obx(() => Text(
-                NumberFormat.currency(symbol: '৳', decimalDigits: 0)
-                    .format(controller.totalSavings),
-                style: const TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                  letterSpacing: -1,
-                ),
-              )),
+                 Obx(() => Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+                     Row(
+                       crossAxisAlignment: CrossAxisAlignment.end,
+                       children: [
+                         Text(
+                           NumberFormat.currency(symbol: '৳', decimalDigits: 0)
+                               .format(controller.totalSavings),
+                           style: const TextStyle(
+                             fontSize: 32,
+                             fontWeight: FontWeight.w900,
+                             color: Colors.black87,
+                             letterSpacing: -1,
+                           ),
+                         ),
+                         const SizedBox(width: 12),
+                         Padding(
+                           padding: const EdgeInsets.only(bottom: 4),
+                           child: Container(
+                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                             decoration: BoxDecoration(
+                               gradient: LinearGradient(
+                                 colors: [Colors.green.shade300, Colors.green.shade500],
+                               ),
+                               borderRadius: BorderRadius.circular(20),
+                               boxShadow: [
+                                 BoxShadow(
+                                   color: Colors.green.withOpacity(0.3),
+                                   blurRadius: 6,
+                                   offset: const Offset(0, 2),
+                                 ),
+                               ],
+                             ),
+                             child: const Row(
+                               mainAxisSize: MainAxisSize.min,
+                               children: [
+                                 Icon(
+                                   Icons.trending_up_rounded,
+                                   size: 16,
+                                   color: Colors.white,
+                                 ),
+                                 SizedBox(width: 4),
+                                 Text(
+                                   'Growing',
+                                   style: TextStyle(
+                                     fontSize: 13,
+                                     fontWeight: FontWeight.bold,
+                                     color: Colors.white,
+                                   ),
+                                 ),
+                               ],
+                             ),
+                           ),
+                         ),
+                       ],
+                     ),
+                     const SizedBox(height: 8),
+                     Container(
+                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                       decoration: BoxDecoration(
+                         color: Colors.grey.shade100,
+                         borderRadius: BorderRadius.circular(16),
+                       ),
+                       child: Text(
+                         'From skipped impulse purchases',
+                         style: TextStyle(
+                           fontSize: 14,
+                           color: Colors.grey.shade600,
+                           fontWeight: FontWeight.w500,
+                         ),
+                       ),
+                     ),
+                   ],
+                 )),
 
-              const SizedBox(height: 8),
+                 const SizedBox(height: 32),
 
-              Text(
-                'From skipped impulse purchases',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white.withOpacity(0.8),
-                ),
-              ),
+                 // Stats Row
+                 Obx(() => Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                   children: [
+                     _buildEnhancedStatItem(
+                       'Waiting',
+                       controller.stats['waiting']?.toString() ?? '0',
+                       Icons.hourglass_empty_rounded,
+                       Colors.orange.shade400,
+                     ),
+                     Container(
+                       height: 40,
+                       width: 1,
+                       decoration: BoxDecoration(
+                         gradient: LinearGradient(
+                           begin: Alignment.topCenter,
+                           end: Alignment.bottomCenter,
+                           colors: [
+                             Colors.grey.shade200,
+                             Colors.grey.shade400,
+                             Colors.grey.shade200,
+                           ],
+                         ),
+                       ),
+                     ),
+                     _buildEnhancedStatItem(
+                       'Skipped',
+                       controller.stats['skipped']?.toString() ?? '0',
+                       Icons.block_rounded,
+                       Colors.green.shade400,
+                     ),
+                     Container(
+                       height: 40,
+                       width: 1,
+                       decoration: BoxDecoration(
+                         gradient: LinearGradient(
+                           begin: Alignment.topCenter,
+                           end: Alignment.bottomCenter,
+                           colors: [
+                             Colors.grey.shade200,
+                             Colors.grey.shade400,
+                             Colors.grey.shade200,
+                           ],
+                         ),
+                       ),
+                     ),
+                     _buildEnhancedStatItem(
+                       'Bought',
+                       controller.stats['bought']?.toString() ?? '0',
+                       Icons.shopping_cart_rounded,
+                       Colors.red.shade400,
+                     ),
+                   ],
+                 )),
+               ],
+             ),
+           ),
+         ),
+       ),
+     );
+   }
 
-              const SizedBox(height: 20),
-
-              Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildStatItem(
-                    'Waiting',
-                    controller.stats['waiting']?.toString() ?? '0',
-                    Icons.hourglass_empty_rounded,
-                  ),
-                  _buildStatItem(
-                    'Skipped',
-                    controller.stats['skipped']?.toString() ?? '0',
-                    Icons.block_rounded,
-                  ),
-                  _buildStatItem(
-                    'Bought',
-                    controller.stats['bought']?.toString() ?? '0',
-                    Icons.shopping_cart_rounded,
-                  ),
-                ],
-              )),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String label, String value, IconData icon) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 20,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.white.withOpacity(0.8),
-          ),
-        ),
-      ],
-    );
-  }
+   Widget _buildEnhancedStatItem(String label, String value, IconData icon, Color color) {
+     return Column(
+       children: [
+         Container(
+           padding: const EdgeInsets.all(10),
+           decoration: BoxDecoration(
+             color: color.withOpacity(0.1),
+             borderRadius: BorderRadius.circular(12),
+             border: Border.all(
+               color: color.withOpacity(0.3),
+               width: 1,
+             ),
+             boxShadow: [
+               BoxShadow(
+                 color: color.withOpacity(0.1),
+                 blurRadius: 4,
+                 offset: const Offset(0, 2),
+               ),
+             ],
+           ),
+           child: Icon(
+             icon,
+             color: color,
+             size: 20,
+           ),
+         ),
+         const SizedBox(height: 8),
+         Text(
+           value,
+           style: TextStyle(
+             fontSize: 18,
+             fontWeight: FontWeight.bold,
+             color: color,
+           ),
+         ),
+         const SizedBox(height: 4),
+         Text(
+           label,
+           style: TextStyle(
+             fontSize: 12,
+             color: Colors.grey.shade600,
+             fontWeight: FontWeight.w500,
+           ),
+         ),
+       ],
+     );
+   }
+  // Widget _buildStatItem(String label, String value, IconData icon) {
+  //   return Column(
+  //     children: [
+  //       Container(
+  //         padding: const EdgeInsets.all(8),
+  //         decoration: BoxDecoration(
+  //           color: Colors.white.withOpacity(0.2),
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         child: Icon(
+  //           icon,
+  //           color: Colors.black,
+  //           size: 20,
+  //         ),
+  //       ),
+  //       const SizedBox(height: 8),
+  //       Text(
+  //         value,
+  //         style: const TextStyle(
+  //           fontSize: 18,
+  //           fontWeight: FontWeight.bold,
+  //           color: Colors.black,
+  //         ),
+  //       ),
+  //       const SizedBox(height: 4),
+  //       Text(
+  //         label,
+  //         style: TextStyle(
+  //           fontSize: 12,
+  //           color: Colors.white.withOpacity(0.8),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildTabBar() {
     return Container(
