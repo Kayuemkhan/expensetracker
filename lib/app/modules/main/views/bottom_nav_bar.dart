@@ -1,11 +1,8 @@
-import 'package:expensetracker/app/core/base/base_widget_mixin.dart';
 import 'package:expensetracker/app/core/values/app_colors.dart';
 import 'package:expensetracker/app/core/values/app_values.dart';
-import 'package:expensetracker/app/core/widget/asset_image_view.dart';
 import 'package:expensetracker/app/modules/main/controllers/bottom_nav_controller.dart';
 import 'package:expensetracker/app/modules/main/model/menu_code.dart';
 import 'package:expensetracker/app/modules/main/model/menu_item.dart';
-import 'package:expensetracker/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
