@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SettingsView extends BaseView<SettingsController> {
+   SettingsView({super.key});
+
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
@@ -17,10 +19,7 @@ class SettingsView extends BaseView<SettingsController> {
       ),
       backgroundColor: Colors.transparent,
       elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.black87),
-        onPressed: () => Get.back(),
-      ),
+
     );
   }
 
