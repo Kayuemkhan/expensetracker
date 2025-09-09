@@ -1,3 +1,4 @@
+import 'package:expensetracker/app/modules/splash/views/splash_view.dart';
 import 'package:get/get.dart';
 
 import 'package:expensetracker/app/modules/home/bindings/home_binding.dart';
@@ -15,13 +16,14 @@ import '../modules/journal/bindings/journal_binding.dart';
 import '../modules/journal/views/journal_view.dart';
 import '../modules/quick_expense/bindings/quick_expense_bindings.dart';
 import '../modules/quick_expense/views/quick_expense_view.dart';
+import '../modules/splash/bindings/splash_binding.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.MAIN;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(
@@ -59,6 +61,11 @@ class AppPages {
       name: _Paths.EXPENSE_DETAILS,
       page: () =>  ExpenseDetailsView(),
       binding: ExpenseBinding(),
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () =>  SplashView(),
+      binding: SplashBinding(),
     ),
   ];
 }
