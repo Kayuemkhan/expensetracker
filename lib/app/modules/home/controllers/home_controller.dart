@@ -287,7 +287,6 @@ class HomeController extends BaseController {
             ),
             const SizedBox(height: 32),
 
-            // Enhanced Amount Field
             _buildStyledTextField(
               controller: amountController,
               label: 'Amount',
@@ -308,7 +307,7 @@ class HomeController extends BaseController {
                 return DropdownMenuItem(
                   value: category,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 2),
                     child: Row(
                       children: [
                         Container(
