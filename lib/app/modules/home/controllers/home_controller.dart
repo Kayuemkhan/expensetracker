@@ -135,11 +135,11 @@ class HomeController extends BaseController {
       ]);
 
       Get.back();
-      Get.snackbar('Success', 'Expense added successfully!');
+      EnhancedSnackbar.show(title: "Success", message: "Expense added successfully!", type: SnackbarType.success);
 
     } catch (e) {
       logger.e('Error adding expense: $e');
-      Get.snackbar('Error', 'Failed to add expense. Please try again.');
+      EnhancedSnackbar.show(title: "Error", message: "Failed to add expense. Please try again.", type: SnackbarType.error);
     }
   }
 
@@ -152,10 +152,12 @@ class HomeController extends BaseController {
         loadTodayExpenses(),
       ]);
 
-      Get.snackbar('Success', 'Expense deleted successfully!');
+      EnhancedSnackbar.show(title: "Success", message: "Expense deleted successfully!", type: SnackbarType.success);
+
     } catch (e) {
       logger.e('Error deleting expense: $e');
-      Get.snackbar('Error', 'Failed to delete expense. Please try again.');
+      EnhancedSnackbar.show(title: "Error", message: "Failed to delete expense. Please try again.", type: SnackbarType.error);
+
     }
   }
 
