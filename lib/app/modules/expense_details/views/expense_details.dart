@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:expensetracker/app/data/model/expense.dart';
 import 'package:expensetracker/app/core/values/expense_constants.dart';
 
+import '../../../core/widget/customsnackbar.dart';
 import '../controllers/expense_controller.dart';
 
 class ExpenseDetailsView extends BaseView<ExpenseController> {
@@ -88,7 +89,8 @@ class ExpenseDetailsView extends BaseView<ExpenseController> {
               Get.back(); // Close dialog
               Get.back(); // Go back to home
               // TODO: Call delete function from controller
-              Get.snackbar('Success', 'Expense deleted successfully!');
+              EnhancedSnackbar.show(title: "Success", message: "Expense deleted successfully!", type: SnackbarType.error);
+
             },
             child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
@@ -186,8 +188,8 @@ class ExpenseDetailsView extends BaseView<ExpenseController> {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    Get.snackbar('Info', 'Edit functionality coming soon!');
-                  },
+                    EnhancedSnackbar.show(title: "Info", message: "Edit functionality coming soon!", type: SnackbarType.info);
+                    },
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
