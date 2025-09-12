@@ -6,15 +6,8 @@ import 'package:expensetracker/app/data/model/impulse_item.dart';
 import 'package:expensetracker/app/core/values/impulse_constants.dart';
 import 'dart:async';
 
-// app/modules/journal/controllers/journal_controller.dart
-import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:expensetracker/app/core/base/base_controller.dart';
-import 'package:expensetracker/app/data/repository/impulse_repository.dart';
-import 'package:expensetracker/app/data/model/impulse_item.dart';
-import 'package:expensetracker/app/core/values/impulse_constants.dart';
-import 'dart:async';
 
+import '../../../core/widget/customsnackbar.dart';
 import '../../../services/notification_service.dart';
 
 class JournalController extends BaseController {
@@ -161,25 +154,15 @@ class JournalController extends BaseController {
       // Clear form
       _clearForm();
 
-      // Reload data
       await loadJournalData();
 
       Get.back(); // Close bottom sheet
-      Get.snackbar(
-        'Success',
-        'Impulse item added! Cooldown started.',
-        backgroundColor: Colors.blue.shade100,
-        colorText: Colors.blue.shade800,
-      );
+      EnhancedSnackbar.show(title: "Success", message: "Impulse item added! Cooldown started.", type: SnackbarType.success);
+
 
     } catch (e) {
       logger.e('Error adding impulse item: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to add item. Please try again.',
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade800,
-      );
+      EnhancedSnackbar.show(title: "Error", message: "Failed to add item. Please try again.", type: SnackbarType.error);
     }
   }
 
@@ -213,6 +196,8 @@ class JournalController extends BaseController {
           ? Colors.orange
           : Colors.green;
 
+
+
       Get.snackbar(
         decision == ImpulseStatus.bought ? 'Purchase Made' : 'Money Saved!',
         message,
@@ -222,12 +207,8 @@ class JournalController extends BaseController {
 
     } catch (e) {
       logger.e('Error making decision: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to update item. Please try again.',
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade800,
-      );
+      EnhancedSnackbar.show(title: "Error", message: "Failed to update item. Please try again.", type: SnackbarType.error);
+
     }
   }
 
@@ -256,24 +237,16 @@ class JournalController extends BaseController {
     try {
       await _impulseRepository.deleteImpulseItem(itemId);
 
-      // Reload data
       await loadJournalData();
 
-      Get.snackbar(
-        'Success',
-        'Item deleted successfully!',
-        backgroundColor: Colors.green.shade100,
-        colorText: Colors.green.shade800,
-      );
+      EnhancedSnackbar.show(title: "Success", message: "Item deleted successfully!", type: SnackbarType.success);
+
 
     } catch (e) {
       logger.e('Error deleting impulse item: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to delete item. Please try again.',
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade800,
-      );
+
+      EnhancedSnackbar.show(title: "Error", message: "Failed to delete item. Please try again.", type: SnackbarType.error);
+
     }
   }
 
@@ -299,23 +272,18 @@ class JournalController extends BaseController {
 
   bool _validateForm() {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar(
-        'Validation Error',
-        'Please enter an item name',
-        backgroundColor: Colors.orange.shade100,
-        colorText: Colors.orange.shade800,
-      );
+
+      EnhancedSnackbar.show(title: "Validation Error", message: "Please enter an item name", type: SnackbarType.error);
+
       return false;
     }
 
     final price = double.tryParse(priceController.text);
     if (price == null || price <= 0) {
-      Get.snackbar(
-        'Validation Error',
-        'Please enter a valid price',
-        backgroundColor: Colors.orange.shade100,
-        colorText: Colors.orange.shade800,
-      );
+
+      EnhancedSnackbar.show(title: "Validation Error", message: "Please enter a valid price", type: SnackbarType.error);
+
+
       return false;
     }
 
