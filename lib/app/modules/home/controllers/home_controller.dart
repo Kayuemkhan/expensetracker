@@ -225,7 +225,7 @@ class HomeController extends BaseController {
           bottom: MediaQuery.of(Get.context!).viewInsets.bottom + 24,
         ),
         child: ListView(
-          physics: ScrollPhysics(),
+          physics: const ScrollPhysics(),
           children: [
             // Enhanced Handle Bar
             Center(
@@ -360,7 +360,6 @@ class HomeController extends BaseController {
             ),
             const SizedBox(height: 32),
 
-            // Enhanced Action Buttons
             Row(
               children: [
                 Expanded(
@@ -368,7 +367,6 @@ class HomeController extends BaseController {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  flex: 2,
                   child: _buildSaveButton(),
                 ),
               ],
@@ -608,14 +606,15 @@ class HomeController extends BaseController {
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.blue.shade400,
-            Colors.blue.shade600,
-          ],
-        ),
+        color: Colors.blue,
+        // gradient: LinearGradient(
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        //   colors: [
+        //     Colors.blue.shade400,
+        //     Colors.blue.shade600,
+        //   ],
+        // ),
         boxShadow: [
           BoxShadow(
             color: Colors.blue.withOpacity(0.4),
