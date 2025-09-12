@@ -5,6 +5,8 @@ import 'package:expensetracker/app/data/repository/expense_repository.dart';
 import 'package:expensetracker/app/data/model/expense.dart';
 import 'package:expensetracker/app/core/values/expense_constants.dart';
 
+import '../../../core/widget/customsnackbar.dart';
+
 class QuickExpenseController extends BaseController {
   final ExpenseRepository _expenseRepository = Get.find<ExpenseRepository>();
 
@@ -107,58 +109,32 @@ class QuickExpenseController extends BaseController {
       // Clear form
       _clearForm();
 
-      // Show success message
-      Get.snackbar(
-        'Success',
-        'Expense added successfully!',
-        backgroundColor: Colors.green.shade100,
-        colorText: Colors.green.shade800,
-        duration: const Duration(seconds: 2),
-      );
+      EnhancedSnackbar.show(title: "Success", message: "Expense added successfully!", type: SnackbarType.success);
 
-      // Go back to previous screen
       Get.back();
 
     } catch (e) {
       logger.e('Error adding expense: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to add expense. Please try again.',
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade800,
-      );
+      EnhancedSnackbar.show(title: "Error", message: "Failed to add expense. Please try again.", type: SnackbarType.error);
     }
   }
 
   bool _validateForm() {
     if (amountController.text.isEmpty) {
-      Get.snackbar(
-        'Validation Error',
-        'Please enter an amount',
-        backgroundColor: Colors.orange.shade100,
-        colorText: Colors.orange.shade800,
-      );
+      EnhancedSnackbar.show(title: "Error", message: "Please enter an amount", type: SnackbarType.error);
       return false;
     }
 
     final amount = double.tryParse(amountController.text);
     if (amount == null || amount <= 0) {
-      Get.snackbar(
-        'Validation Error',
-        'Please enter a valid amount',
-        backgroundColor: Colors.orange.shade100,
-        colorText: Colors.orange.shade800,
-      );
+
+
+      EnhancedSnackbar.show(title: "Error", message: "Please enter a valid amount", type: SnackbarType.error);
       return false;
     }
 
     if (descriptionController.text.trim().isEmpty) {
-      Get.snackbar(
-        'Validation Error',
-        'Please enter a description',
-        backgroundColor: Colors.orange.shade100,
-        colorText: Colors.orange.shade800,
-      );
+      EnhancedSnackbar.show(title: "Error", message: "Please enter a description", type: SnackbarType.error);
       return false;
     }
 
