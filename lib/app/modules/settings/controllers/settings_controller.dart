@@ -5,6 +5,7 @@ import 'package:expensetracker/app/data/repository/expense_repository.dart';
 import 'package:expensetracker/app/data/repository/impulse_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+import '../../../core/widget/customsnackbar.dart';
 
 class SettingsController extends BaseController {
   final ExpenseRepository _expenseRepository = Get.find<ExpenseRepository>();
@@ -45,11 +46,10 @@ class SettingsController extends BaseController {
       await prefs.setBool('daily_budget_notification', value);
       _dailyBudgetLimitNotification.value = value;
 
-      Get.snackbar(
-        'Settings Updated',
-        value ? 'Daily budget notifications enabled' : 'Daily budget notifications disabled',
-        backgroundColor: Colors.blue.shade100,
-        colorText: Colors.blue.shade800,
+      EnhancedSnackbar.show(
+        title: "Success",
+        message: value ? 'Daily budget notifications enabled' : 'Daily budget notifications disabled',
+        type: SnackbarType.success
       );
     } catch (e) {
       logger.e('Error updating daily budget notification: $e');
@@ -62,11 +62,10 @@ class SettingsController extends BaseController {
       await prefs.setBool('monthly_budget_notification', value);
       _monthlyBudgetLimitNotification.value = value;
 
-      Get.snackbar(
-        'Settings Updated',
-        value ? 'Monthly budget notifications enabled' : 'Monthly budget notifications disabled',
-        backgroundColor: Colors.blue.shade100,
-        colorText: Colors.blue.shade800,
+      EnhancedSnackbar.show(
+        title: "Success",
+        message: value ? 'Monthly budget notifications enabled' : 'Monthly budget notifications disabled',
+        type: SnackbarType.success
       );
     } catch (e) {
       logger.e('Error updating monthly budget notification: $e');
@@ -79,11 +78,10 @@ class SettingsController extends BaseController {
       await prefs.setBool('daily_reminder_notification', value);
       _dailyExpenseReminderNotification.value = value;
 
-      Get.snackbar(
-        'Settings Updated',
-        value ? 'Daily expense reminders enabled' : 'Daily expense reminders disabled',
-        backgroundColor: Colors.blue.shade100,
-        colorText: Colors.blue.shade800,
+      EnhancedSnackbar.show(
+        title: "Success",
+        message: value ? 'Daily expense reminders enabled' : 'Daily expense reminders disabled',
+        type: SnackbarType.success
       );
     } catch (e) {
       logger.e('Error updating daily reminder notification: $e');
@@ -97,20 +95,16 @@ class SettingsController extends BaseController {
         barrierDismissible: false,
       );
 
-      // Get all data
       final expenses = await _expenseRepository.getExpensesByDateRange(
         DateTime(2020, 1, 1),
         DateTime.now(),
       );
       final impulseItems = await _impulseRepository.getAllImpulseItems();
 
-      // Create CSV content manually
       StringBuffer csvBuffer = StringBuffer();
 
-      // Add header
       csvBuffer.writeln('Type,Amount,Category,Merchant,Note,Date');
 
-      // Add expenses
       for (var expense in expenses) {
         csvBuffer.writeln([
           'Expense',
@@ -122,7 +116,6 @@ class SettingsController extends BaseController {
         ].join(','));
       }
 
-      // Add impulse items
       for (var item in impulseItems) {
         csvBuffer.writeln([
           'Impulse Item',
@@ -134,12 +127,9 @@ class SettingsController extends BaseController {
         ].join(','));
       }
 
-      // Use a simple path instead of getApplicationDocumentsDirectory
-      // This will save to the app's internal storage
       final fileName = 'expense_tracker_export_${DateTime.now().millisecondsSinceEpoch}.csv';
 
       try {
-        // Try to save to external storage if available
         final directory = Directory('/storage/emulated/0/Download');
         if (await directory.exists()) {
           final file = File('${directory.path}/$fileName');
@@ -147,12 +137,10 @@ class SettingsController extends BaseController {
 
           Get.back(); // Close loading dialog
 
-          Get.snackbar(
-            'Export Successful',
-            'Data exported to Downloads folder: $fileName',
-            backgroundColor: Colors.green.shade100,
-            colorText: Colors.green.shade800,
-            duration: const Duration(seconds: 4),
+          EnhancedSnackbar.show(
+            title: "Success",
+            message: 'Data exported to Downloads folder: $fileName',
+            type: SnackbarType.success
           );
           return;
         }
@@ -160,57 +148,49 @@ class SettingsController extends BaseController {
         logger.w('Could not save to Downloads, trying internal storage: $e');
       }
 
-      // Fallback: Save to temporary directory
       final tempDir = Directory.systemTemp;
       final file = File('${tempDir.path}/$fileName');
       await file.writeAsString(csvBuffer.toString());
 
       Get.back(); // Close loading dialog
 
-      Get.snackbar(
-        'Export Successful',
-        'Data exported to: $fileName\nLocation: ${tempDir.path}',
-        backgroundColor: Colors.green.shade100,
-        colorText: Colors.green.shade800,
-        duration: const Duration(seconds: 4),
+      EnhancedSnackbar.show(
+        title: "Success",
+        message: 'Data exported to: $fileName\nLocation: ${tempDir.path}',
+        type: SnackbarType.success
       );
 
     } catch (e) {
       Get.back(); // Close loading dialog
       logger.e('Error exporting data: $e');
 
-      Get.snackbar(
-        'Export Failed',
-        'Failed to export data. Please try again.',
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade800,
+      EnhancedSnackbar.show(
+        title: "Error",
+        message: 'Failed to export data. Please try again.',
+        type: SnackbarType.error
       );
     }
   }
 
   Future<void> importData() async {
     try {
-      Get.snackbar(
-        'Import Info',
-        'CSV import feature will be available in a future update. For now, you can manually add expenses through the app.',
-        backgroundColor: Colors.blue.shade100,
-        colorText: Colors.blue.shade800,
-        duration: const Duration(seconds: 4),
+      EnhancedSnackbar.show(
+        title: "Success", // Or "Info" if you add that type
+        message: 'CSV import feature will be available in a future update. For now, you can manually add expenses through the app.',
+        type: SnackbarType.success
       );
     } catch (e) {
       logger.e('Error in import data: $e');
 
-      Get.snackbar(
-        'Import Failed',
-        'Import feature is not available yet.',
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade800,
+      EnhancedSnackbar.show(
+        title: "Error",
+        message: 'Import feature is not available yet.',
+        type: SnackbarType.error
       );
     }
   }
 
   String _escapeCsvField(String field) {
-    // Escape CSV fields by wrapping in quotes if they contain commas, quotes, or newlines
     if (field.contains(',') || field.contains('"') || field.contains('\n')) {
       return '"${field.replaceAll('"', '""')}"';
     }
@@ -286,26 +266,20 @@ class SettingsController extends BaseController {
               );
 
               try {
-                // Note: You'll need to implement these methods in your repositories
-                // await _expenseRepository.clearAllExpenses();
-                // await _impulseRepository.clearAllImpulseItems();
-
                 Get.back(); // Close loading
 
-                Get.snackbar(
-                  'Data Cleared',
-                  'All data has been successfully deleted.',
-                  backgroundColor: Colors.green.shade100,
-                  colorText: Colors.green.shade800,
+                EnhancedSnackbar.show(
+                  title: "Success",
+                  message: 'All data has been successfully deleted.',
+                  type: SnackbarType.success
                 );
               } catch (e) {
                 Get.back(); // Close loading
 
-                Get.snackbar(
-                  'Error',
-                  'Failed to clear data. Please try again.',
-                  backgroundColor: Colors.red.shade100,
-                  colorText: Colors.red.shade800,
+                EnhancedSnackbar.show(
+                  title: "Error",
+                  message: 'Failed to clear data. Please try again.',
+                  type: SnackbarType.error
                 );
               }
             },
