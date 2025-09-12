@@ -1,3 +1,4 @@
+import 'package:expensetracker/app/core/widget/customsnackbar.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:expensetracker/app/core/base/base_controller.dart';
@@ -180,17 +181,17 @@ class HomeController extends BaseController {
 
   bool _validateExpenseForm() {
     if (amountController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Please enter an amount');
+      EnhancedSnackbar.show(title: "Validation Error", message: "Please enter an valid amount", type: SnackbarType.error);
       return false;
     }
 
     if (double.tryParse(amountController.text) == null) {
-      Get.snackbar('Validation Error', 'Please enter a valid amount');
+      EnhancedSnackbar.show(title: "Validation Error", message: "Please enter an valid amount", type: SnackbarType.error);
       return false;
     }
 
     if (merchantController.text.trim().isEmpty) {
-      Get.snackbar('Validation Error', 'Please enter a merchant name');
+      EnhancedSnackbar.show(title: "Validation Error", message: "Please enter a merchant name", type: SnackbarType.error);
       return false;
     }
 
@@ -239,7 +240,7 @@ class HomeController extends BaseController {
                   borderRadius: BorderRadius.circular(3),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withValues(alpha: 0.2),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -261,7 +262,7 @@ class HomeController extends BaseController {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.blue.withOpacity(0.3),
+                        color: Colors.blue.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -607,14 +608,6 @@ class HomeController extends BaseController {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.blue,
-        // gradient: LinearGradient(
-        //   begin: Alignment.topLeft,
-        //   end: Alignment.bottomRight,
-        //   colors: [
-        //     Colors.blue.shade400,
-        //     Colors.blue.shade600,
-        //   ],
-        // ),
         boxShadow: [
           BoxShadow(
             color: Colors.blue.withOpacity(0.4),

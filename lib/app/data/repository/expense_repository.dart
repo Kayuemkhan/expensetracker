@@ -34,7 +34,6 @@ class ExpenseRepository {
     return await _databaseHelper.deleteExpense(id);
   }
 
-  // Budget operations
   Future<int> setBudget(double monthlyAmount) async {
     final now = DateTime.now();
     final currentMonth = DateTime(now.year, now.month);
