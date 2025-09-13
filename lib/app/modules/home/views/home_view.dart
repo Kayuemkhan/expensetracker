@@ -118,22 +118,53 @@ class HomeView extends BaseView<HomeController> {
                         color: Colors.black87,
                       ),
                     ),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.blue.shade100,
+                    //     borderRadius: BorderRadius.circular(20),
+                    //   ),
+                    //   child: Text(
+                    //     NumberFormat.currency(symbol: '৳', decimalDigits: 0)
+                    //         .format(controller.dailyBudget),
+                    //     style: TextStyle(
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.blue.shade700,
+                    //     ),
+                    //   ),
+                    // ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: Colors.blue.shade100,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text(
-                        NumberFormat.currency(symbol: '৳', decimalDigits: 0)
-                            .format(controller.dailyBudget),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue.shade700,
+                      child: GestureDetector(
+                        onTap: () => controller.showUpdateBudgetDialog(),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.edit,
+                              color: Colors.blue.shade700,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              NumberFormat.currency(symbol: '৳', decimalDigits: 0)
+                                  .format(controller.dailyBudget),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue.shade700,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
+
                   ],
                 ),
                 const SizedBox(height: 20),

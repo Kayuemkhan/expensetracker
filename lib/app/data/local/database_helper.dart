@@ -174,7 +174,6 @@ class DatabaseHelper {
     }
     return null;
   }
-
   Future<int> updateBudget(Budget budget) async {
     final db = await database;
     return await db.update(
@@ -184,6 +183,8 @@ class DatabaseHelper {
       whereArgs: [budget.id],
     );
   }
+
+
   Future<int> insertImpulseItem(ImpulseItem item) async {
     final db = await database;
     return await db.insert('impulse_items', item.toJson());

@@ -5,6 +5,7 @@ import 'package:expensetracker/app/core/base/base_controller.dart';
 import 'package:expensetracker/app/data/repository/expense_repository.dart';
 import 'package:expensetracker/app/data/model/expense.dart';
 import 'package:expensetracker/app/core/values/expense_constants.dart';
+import 'package:intl/intl.dart';
 
 class HomeController extends BaseController {
   final ExpenseRepository _expenseRepository = Get.put(ExpenseRepository());
@@ -32,6 +33,9 @@ class HomeController extends BaseController {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController merchantController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
+  final TextEditingController budgetController = TextEditingController();
+  final RxString budgetInputText = ''.obs;
+
   final RxString selectedCategory = ExpenseConstants.categories.first.obs;
 
   @override
@@ -45,8 +49,288 @@ class HomeController extends BaseController {
     amountController.dispose();
     merchantController.dispose();
     noteController.dispose();
+    budgetController.dispose();
+
     super.onClose();
+
   }
+
+  void showUpdateBudgetDialog() {
+    // Pre-fill with current monthly budget
+    final currentMonthlyBudget = _dailyBudget.value * 30;
+    budgetController.text = currentMonthlyBudget.toStringAsFixed(0);
+    budgetInputText.value = budgetController.text; // Initialize observable
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white,
+                Colors.blue.shade50,
+              ],
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.blue.shade400, Colors.blue.shade600],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.account_balance_wallet_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Expanded(
+                    child: Text(
+                      'Update Budget',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Current budget info
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.blue.shade100),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Current Daily Budget:',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        Text(
+                          NumberFormat.currency(symbol: '৳', decimalDigits: 0)
+                              .format(_dailyBudget.value),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Current Monthly Budget:',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        Text(
+                          NumberFormat.currency(symbol: '৳', decimalDigits: 0)
+                              .format(_dailyBudget.value * 30),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Input field
+              TextField(
+                controller: budgetController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                onChanged: (value) {
+                  budgetInputText.value = value; // Update observable
+                },
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'Monthly Budget',
+                  prefixText: '৳ ',
+                  prefixStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black54,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Daily budget preview - FIXED VERSION
+              Obx(() {
+                final monthlyAmount = double.tryParse(budgetInputText.value) ?? 0;
+                final dailyAmount = monthlyAmount / 30;
+
+                return Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.green.shade200),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.green.shade600,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Daily Budget: ${NumberFormat.currency(symbol: '৳', decimalDigits: 0).format(dailyAmount)}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.green.shade700,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+
+              const SizedBox(height: 24),
+
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        budgetController.clear();
+                        budgetInputText.value = '';
+                        Get.back();
+                      },
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        side: BorderSide(color: Colors.grey.shade400),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => updateBudget(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue.shade600,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Update',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> updateBudget() async {
+    final monthlyAmount = double.tryParse(budgetController.text);
+
+    if (monthlyAmount == null || monthlyAmount <= 0) {
+      CustomSnackbar.error(
+        title: 'Invalid Amount',
+        message: 'Please enter a valid monthly budget amount',
+      );
+      return;
+    }
+
+    if (monthlyAmount < 1000) {
+      CustomSnackbar.warning(
+        title: 'Low Budget',
+        message: 'Monthly budget seems low. Are you sure this is correct?',
+      );
+      return;
+    }
+
+    try {
+      await _expenseRepository.setBudget(monthlyAmount);
+
+      // Reload budget data to reflect changes
+      await loadBudgetData();
+
+      budgetController.clear();
+      Get.back();
+
+      CustomSnackbar.success(
+        title: 'Budget Updated',
+        message: 'Your monthly budget has been updated successfully!',
+      );
+
+    } catch (e) {
+      logger.e('Error updating budget: $e');
+      CustomSnackbar.error(
+        title: 'Update Failed',
+        message: 'Failed to update budget. Please try again.',
+      );
+    }
+  }
+
 
   Future<void> loadHomeData() async {
     await Future.wait([
