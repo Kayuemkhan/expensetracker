@@ -55,7 +55,7 @@ class InsightsView extends BaseView<InsightController> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.blue.shade50.withOpacity(0.3),
+              Colors.blue.shade50.withValues(alpha: 0.3),
               Colors.white,
             ],
           ),
@@ -108,7 +108,7 @@ class InsightsView extends BaseView<InsightController> {
       margin: const EdgeInsets.all(20),
       child: Card(
         elevation: 12,
-        shadowColor: Colors.purple.withOpacity(0.2),
+        shadowColor: Colors.purple.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Container(
           decoration: BoxDecoration(
@@ -130,7 +130,7 @@ class InsightsView extends BaseView<InsightController> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: const Icon(
@@ -167,7 +167,7 @@ class InsightsView extends BaseView<InsightController> {
                   Container(
                     height: 60,
                     width: 1,
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                   Expanded(
                     child: _buildOverviewStat(
@@ -192,7 +192,7 @@ class InsightsView extends BaseView<InsightController> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -215,7 +215,7 @@ class InsightsView extends BaseView<InsightController> {
           label,
           style: TextStyle(
             fontSize: 14,
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withValues(alpha: 0.8),
           ),
         ),
       ],
@@ -239,7 +239,7 @@ class InsightsView extends BaseView<InsightController> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.orange.withOpacity(0.3),
+                      color: Colors.orange.withValues(alpha: 0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -273,7 +273,7 @@ class InsightsView extends BaseView<InsightController> {
   Widget _buildImpulseDecisionsCard() {
     return Card(
       elevation: 8,
-      shadowColor: Colors.blue.withOpacity(0.2),
+      shadowColor: Colors.blue.withValues(alpha: 0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
         decoration: BoxDecoration(
@@ -376,13 +376,13 @@ class InsightsView extends BaseView<InsightController> {
             const SizedBox(height: 24),
 
             // Enhanced bar chart
-            Obx(() => Container(
-              height: 120,
+            Obx(() => SizedBox(
+              height: 130,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: controller.weeklyImpulseDecisions.asMap().entries.map((entry) {
-                  final index = entry.key;
+                  final _ = entry.key;
                   final week = entry.value;
                   final decisions = week['decisions'] as int;
                   final maxDecisions = controller.getMaxWeeklyDecisions();
@@ -415,7 +415,7 @@ class InsightsView extends BaseView<InsightController> {
                           borderRadius: BorderRadius.circular(6),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.blue.withOpacity(0.3),
+                              color: Colors.blue.withValues(alpha: 0.3),
                               blurRadius: 4,
                               offset: const Offset(0, 2),
                             ),
@@ -446,7 +446,7 @@ class InsightsView extends BaseView<InsightController> {
       margin: const EdgeInsets.all(20),
       child: Card(
         elevation: 8,
-        shadowColor: Colors.green.withOpacity(0.2),
+        shadowColor: Colors.green.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Container(
           decoration: BoxDecoration(
@@ -475,7 +475,7 @@ class InsightsView extends BaseView<InsightController> {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.green.withOpacity(0.3),
+                          color: Colors.green.withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -539,7 +539,7 @@ class InsightsView extends BaseView<InsightController> {
               Obx(() {
                 final categories = controller.categorySpending.entries.toList();
                 if (categories.isEmpty) {
-                  return Container(
+                  return SizedBox(
                     height: 200,
                     child: Center(
                       child: Column(
@@ -569,7 +569,7 @@ class InsightsView extends BaseView<InsightController> {
                     // Pie Chart
                     Expanded(
                       flex: 2,
-                      child: Container(
+                      child: SizedBox(
                         height: 200,
                         child: PieChart(
                           PieChartData(
@@ -694,7 +694,7 @@ class InsightsView extends BaseView<InsightController> {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Card(
         elevation: 8,
-        shadowColor: Colors.indigo.withOpacity(0.2),
+        shadowColor: Colors.indigo.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Container(
           decoration: BoxDecoration(
@@ -723,7 +723,7 @@ class InsightsView extends BaseView<InsightController> {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.indigo.withOpacity(0.3),
+                          color: Colors.indigo.withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -758,14 +758,18 @@ class InsightsView extends BaseView<InsightController> {
               const SizedBox(height: 16),
 
               // Weekly spending bars
-              Obx(() => Container(
+              Obx(() => SizedBox(
                 height: 150,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: controller.weeklySpending.map((week) {
                     final amount = week['amount'] as double;
+                    print('amountCheck');
+                    print(amount.toString());
                     final maxAmount = controller.getMaxWeeklySpending();
+                    print('maxAmountCheck');
+                    print(maxAmount);
                     final height = maxAmount > 0 ? (amount / maxAmount * 70).clamp(8.0, 70.0) : 8.0;
                     final isHighest = amount == maxAmount && maxAmount > 0;
 
@@ -773,7 +777,7 @@ class InsightsView extends BaseView<InsightController> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          '৳${(amount / 1000).toStringAsFixed(0)}k',
+                          '৳${(amount / 1000).toStringAsFixed(2)}k',
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
