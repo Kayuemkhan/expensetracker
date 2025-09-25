@@ -40,9 +40,9 @@ android {
             dimension = "default"
             applicationIdSuffix = ".dev"
         }
-//        create("prod") {
-//            dimension = "default"
-//        }
+        create("prod") {
+            dimension = "default"
+        }
     }
 }
 
