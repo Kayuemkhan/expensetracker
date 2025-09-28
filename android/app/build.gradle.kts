@@ -30,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.expensetracker"
+        applicationId = "code.newbase.expensetracker"
         minSdk = flutter.minSdkVersion  // Increased for notifications support
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -58,21 +58,21 @@ android {
         release {
             signingConfig = signingConfigs.getByName("debug")
         }
-//        release {
-//            signingConfig = signingConfigs.getByName("release")
-//        }
+        release {
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
 
-    flavorDimensions += "default"
-    productFlavors {
-        create("dev") {
-            dimension = "default"
-            applicationIdSuffix = ".dev"
-        }
-        create("prod") {
-            dimension = "default"
-        }
-    }
+//    flavorDimensions += "default"
+//    productFlavors {
+//        create("dev") {
+//            dimension = "default"
+//            applicationIdSuffix = ".dev"
+//        }
+//        create("prod") {
+//            dimension = "default"
+//        }
+//    }
 }
 
 flutter {

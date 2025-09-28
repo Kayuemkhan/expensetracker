@@ -31,8 +31,8 @@ class SettingsView extends BaseView<SettingsController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildNotificationsSection(),
-            const SizedBox(height: 32),
+            // _buildNotificationsSection(),
+            // const SizedBox(height: 32),
             _buildPrivacySection(),
             const SizedBox(height: 32),
             _buildAboutSection(),
