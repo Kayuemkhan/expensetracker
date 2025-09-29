@@ -32,9 +32,9 @@ android {
     defaultConfig {
         applicationId = "code.newbase.expensetracker"
         minSdk = flutter.minSdkVersion  // Increased for notifications support
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        targetSdk = 36
+        versionCode = 11
+        versionName = "1.11"
         multiDexEnabled = true
     }
 
@@ -55,9 +55,9 @@ android {
     }
 
     buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("debug")
-        }
+//        release {
+//            signingConfig = signingConfigs.getByName("debug")
+//        }
         release {
             signingConfig = signingConfigs.getByName("release")
         }
