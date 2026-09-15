@@ -30,16 +30,20 @@ dependencies:
     sdk: flutter
 #  fluttertoast: ^8.2.12
   flutter_svg: 2.2.0
-  intl: 0.20.2
+  intl: ^0.20.3
   logger: 2.6.1
   pretty_dio_logger: 1.4.0
   shared_preferences: 2.5.3
+  path: ^1.9.1
+  sqflite: ^2.4.2
   fl_chart: ^1.1.0
   flutter_local_notifications: ^19.4.1
   timezone: ^0.10.1
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   flutter_lints: 2.0.2
   analyzer: 4.7.0

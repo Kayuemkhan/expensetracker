@@ -122,6 +122,47 @@ Models encapsulate serialization at the boundary with `toJson`, `fromJson`, and 
 | Notifications | `flutter_local_notifications` with timezone-aware scheduling |
 | Localization | Flutter localization resources for English and Bengali |
 
+## Testing
+
+The test suite exercises the application at three levels: deterministic model
+rules, user-visible widgets, and a real device flow through the app. The
+complete functional acceptance catalogue, including backlog and acceptance-gap
+cases, is available in [docs/TEST_CASES.md](docs/TEST_CASES.md).
+
+### Test coverage
+
+| Type | Focus | Source |
+| --- | --- | --- |
+| Unit (7) | Expense and budget serialization/copy behaviour; impulse-item serialization, cooldown state, progress bounds, and decisions | [test/unit](test/unit) |
+| Widget (3) | Bottom-navigation selection, Quick Expense form/budget rendering, and category selection | [test/widget](test/widget) |
+| Integration (1) | Splash-to-Home launch, recording and displaying an SQLite-backed expense, then navigation to Journal | [integration_test/app_smoke_test.dart](integration_test/app_smoke_test.dart) |
+
+### Executable test cases
+
+| ID | Level | Verifies |
+| --- | --- | --- |
+| UT-01 | Unit | An `Expense` serializes and deserializes without losing ID, amount, category, merchant, note, or date. |
+| UT-02 | Unit | `Expense.copyWith` changes supplied fields while retaining all others. |
+| UT-03 | Unit | A `Budget` retains its monthly and daily amounts and month through JSON conversion. |
+| UT-04 | Unit | An `ImpulseItem` preserves its status, cooldown, and optional notes through serialization. |
+| UT-05 | Unit | A completed cooldown reports zero remaining time and 100% progress. |
+| UT-06 | Unit | An active cooldown has positive remaining time and progress bounded between 0% and 100%. |
+| UT-07 | Unit | An impulse decision is immutable: `copyWith` creates a decided item without changing the original. |
+| WT-01 | Widget | Tapping Journal and Settings updates both the navigation callback and selected index. |
+| WT-02 | Widget | Quick Expense renders the amount, description, category, date, and current daily-budget information. |
+| WT-03 | Widget | A user can open the category selector and choose Transport. |
+| IT-01 | Integration | On a device, the app progresses from splash to Home, saves a uniquely named expense, shows it in the list, and opens Journal. |
+
+### Run tests
+
+```bash
+# Unit and widget tests
+flutter test
+
+# Device integration test (Android emulator/device or iOS simulator/device)
+flutter test integration_test -d <device-id>
+```
+
 ## Getting started
 
 ### Prerequisites
@@ -162,7 +203,7 @@ flutter test
 
 ## Roadmap
 
-- Automated tests for repositories, controllers, and database migrations
+- Broader controller, repository, database-migration, and accessibility coverage from the documented test cases
 - CSV import and a completed end-to-end data reset flow
 - Configurable notification preferences wired to scheduled reminders
 - Expanded locale coverage and accessibility review
